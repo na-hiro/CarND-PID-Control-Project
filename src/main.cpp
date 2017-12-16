@@ -34,9 +34,17 @@ int main()
 
   PID pid;
   // TODO: Initialize the pid variable.
-//  pid.Init(0.2, 0.001, 3.0);
-  pid.Init(0.2, 0.001, 2.0); // good?
-//  pid.Init(0.05, 0, 5.00);
+  // void PID::Init(double Kp, double Ki, double Kd);
+  //Kp, Ki, Kd are called Proportional Gain, Integral Gain, and Differential Gain, respectively.
+  //Kp: If you increase the value, you will try to quickly bring CTE closer to 0, but vibration will diverge.
+  //Kd: There is a role to suppress the amount of change of the input (steering wheel angle).
+  //Ki: There is an effect to reduce steady-state deviation.
+
+//  Experimental trial of parameter tuning
+//  pid.Init(1, 0.001, 2.0); // bad oscillation
+//  pid.Init(0.05, 0, 5.00); // Deviate from the center
+//  pid.Init(0.2, 0, 3.0);
+  pid.Init(0.2, 0.001, 2.0); // good :More natural behavior with curves
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
